@@ -22,12 +22,13 @@
     background: #191818;
     overflow-y: auto;
     text-align: right;
-    
+    height: 800px;
 
     -webkit-overflow-scrolling: touch;
     
     
 }
+
 .leftForm{
     float: left;
     padding: 10px;
@@ -108,7 +109,7 @@ footer {
 }
 .pageTitel{
     position: relative;
-    top:50px;
+    top:70px;
     right: 5%;
     z-index: -1;
     text-align: right;
@@ -143,6 +144,8 @@ footer {
       width: 500px;
     padding-bottom: 20px;
 }
+
+
 .tabelClass th,
 .tabelClass{
     text-align: right;
@@ -183,3 +186,46 @@ input[type="date"]{
         margin-top: 0;
     }
 }
+
+/*////////////////////////////////////////*/
+
+
+body {margin: 0;}
+
+ul.topnav {
+    list-style-type: none;
+   /* margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #000;*/
+}
+
+ul.topnav li {float: right;}
+
+ul.topnav li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+ul.topnav li a:hover:not(.active) {background-color: #111;}
+
+ul.topnav li a.active {background-color: lightslategrey;}
+
+ul.topnav li.right {float: right;}
+
+@media screen and (max-width: 600px){
+    ul.topnav li.right, 
+    ul.topnav li {float: none;}
+}
+
+.RegisterInputs
+{
+	
+float: right;	
+	
+	
+}
+
