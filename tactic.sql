@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 18, 2018 at 06:07 PM
+-- Generation Time: Sep 22, 2018 at 06:06 PM
 -- Server version: 10.1.21-MariaDB
 -- PHP Version: 5.6.30
 
@@ -27,9 +27,9 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `account` (
-  `organizer-ID` int(11) NOT NULL,
-  `email-org` varchar(30) NOT NULL,
-  `password-org` varchar(30) NOT NULL
+  `organizerID` int(11) NOT NULL,
+  `emailOrg` varchar(30) NOT NULL,
+  `passwordOrg` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -198,31 +198,31 @@ CREATE TABLE `subevent` (
 -- Indexes for table `account`
 --
 ALTER TABLE `account`
-  ADD PRIMARY KEY (`email-org`),
-  ADD KEY `organizer-ID` (`organizer-ID`);
+  ADD PRIMARY KEY (`emailOrg`),
+  ADD KEY `account_ibfk_1` (`organizerID`);
 
 --
 -- Indexes for table `attendee`
 --
 ALTER TABLE `attendee`
   ADD PRIMARY KEY (`Attendee_ID`),
-  ADD KEY `form_ID` (`form_ID`),
-  ADD KEY `Prize_ID` (`Prize_ID`),
-  ADD KEY `event_ID` (`event_ID`);
+  ADD KEY `attendee_ibfk_1` (`form_ID`),
+  ADD KEY `attendee_ibfk_3` (`Prize_ID`),
+  ADD KEY `attendee_ibfk_4` (`event_ID`);
 
 --
 -- Indexes for table `badge`
 --
 ALTER TABLE `badge`
   ADD PRIMARY KEY (`badge_ID`),
-  ADD KEY `event_ID` (`event_ID`);
+  ADD KEY `badge_ibfk_1` (`event_ID`);
 
 --
 -- Indexes for table `certificate`
 --
 ALTER TABLE `certificate`
   ADD PRIMARY KEY (`certif icate_ ID`),
-  ADD KEY `event_ID` (`event_ID`);
+  ADD KEY `certificate_ibfk_1` (`event_ID`);
 
 --
 -- Indexes for table `checkinsub`
@@ -248,29 +248,29 @@ ALTER TABLE `organizer`
 --
 ALTER TABLE `prize`
   ADD PRIMARY KEY (`Prize_ID`),
-  ADD KEY `event_ID` (`event_ID`);
+  ADD KEY `prize_ibfk_1` (`event_ID`);
 
 --
 -- Indexes for table `qr`
 --
 ALTER TABLE `qr`
   ADD PRIMARY KEY (`badge_ID`,`QR_code`),
-  ADD KEY `Attendee_ID` (`Attendee_ID`);
+  ADD KEY `qr_ibfk_1` (`Attendee_ID`);
 
 --
 -- Indexes for table `rate`
 --
 ALTER TABLE `rate`
   ADD PRIMARY KEY (`rate_ID`),
-  ADD KEY `event_ID` (`event_ID`),
-  ADD KEY `subevent_ID` (`subevent_ID`);
+  ADD KEY `rate_ibfk_1` (`event_ID`),
+  ADD KEY `rate_ibfk_2` (`subevent_ID`);
 
 --
 -- Indexes for table `registration_form`
 --
 ALTER TABLE `registration_form`
   ADD PRIMARY KEY (`form_ID`),
-  ADD KEY `event_ID` (`event_ID`);
+  ADD KEY `registration_form_ibfk_1` (`event_ID`);
 
 --
 -- Indexes for table `subevent`
@@ -335,52 +335,58 @@ ALTER TABLE `subevent`
 -- Constraints for table `account`
 --
 ALTER TABLE `account`
-  ADD CONSTRAINT `account_ibfk_1` FOREIGN KEY (`organizer-ID`) REFERENCES `organizer` (`organizer-id`);
+  ADD CONSTRAINT `account_ibfk_1` FOREIGN KEY (`organizerID`) REFERENCES `organizer` (`organizer-id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `attendee`
 --
 ALTER TABLE `attendee`
-  ADD CONSTRAINT `attendee_ibfk_1` FOREIGN KEY (`form_ID`) REFERENCES `registration_form` (`form_ID`),
-  ADD CONSTRAINT `attendee_ibfk_3` FOREIGN KEY (`Prize_ID`) REFERENCES `prize` (`Prize_ID`),
-  ADD CONSTRAINT `attendee_ibfk_4` FOREIGN KEY (`event_ID`) REFERENCES `event` (`event_ID`);
+  ADD CONSTRAINT `attendee_ibfk_1` FOREIGN KEY (`form_ID`) REFERENCES `registration_form` (`form_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `attendee_ibfk_3` FOREIGN KEY (`Prize_ID`) REFERENCES `prize` (`Prize_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `attendee_ibfk_4` FOREIGN KEY (`event_ID`) REFERENCES `event` (`event_ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `badge`
 --
 ALTER TABLE `badge`
-  ADD CONSTRAINT `badge_ibfk_1` FOREIGN KEY (`event_ID`) REFERENCES `event` (`event_ID`);
+  ADD CONSTRAINT `badge_ibfk_1` FOREIGN KEY (`event_ID`) REFERENCES `event` (`event_ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `certificate`
 --
 ALTER TABLE `certificate`
-  ADD CONSTRAINT `certificate_ibfk_1` FOREIGN KEY (`event_ID`) REFERENCES `event` (`event_ID`);
+  ADD CONSTRAINT `certificate_ibfk_1` FOREIGN KEY (`event_ID`) REFERENCES `event` (`event_ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `event`
+--
+ALTER TABLE `event`
+  ADD CONSTRAINT `event_ibfk_1` FOREIGN KEY (`organizer_ID`) REFERENCES `organizer` (`organizer-id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `prize`
 --
 ALTER TABLE `prize`
-  ADD CONSTRAINT `prize_ibfk_1` FOREIGN KEY (`event_ID`) REFERENCES `event` (`event_ID`);
+  ADD CONSTRAINT `prize_ibfk_1` FOREIGN KEY (`event_ID`) REFERENCES `event` (`event_ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `qr`
 --
 ALTER TABLE `qr`
-  ADD CONSTRAINT `qr_ibfk_1` FOREIGN KEY (`Attendee_ID`) REFERENCES `attendee` (`Attendee_ID`);
+  ADD CONSTRAINT `qr_ibfk_1` FOREIGN KEY (`Attendee_ID`) REFERENCES `attendee` (`Attendee_ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `rate`
 --
 ALTER TABLE `rate`
-  ADD CONSTRAINT `rate_ibfk_1` FOREIGN KEY (`event_ID`) REFERENCES `event` (`event_ID`),
-  ADD CONSTRAINT `rate_ibfk_2` FOREIGN KEY (`subevent_ID`) REFERENCES `subevent` (`subevent_ID`);
+  ADD CONSTRAINT `rate_ibfk_1` FOREIGN KEY (`event_ID`) REFERENCES `event` (`event_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `rate_ibfk_2` FOREIGN KEY (`subevent_ID`) REFERENCES `subevent` (`subevent_ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `registration_form`
 --
 ALTER TABLE `registration_form`
-  ADD CONSTRAINT `registration_form_ibfk_1` FOREIGN KEY (`event_ID`) REFERENCES `event` (`event_ID`);
+  ADD CONSTRAINT `registration_form_ibfk_1` FOREIGN KEY (`event_ID`) REFERENCES `event` (`event_ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
