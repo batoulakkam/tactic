@@ -29,7 +29,10 @@ SET time_zone = "+00:00";
 CREATE TABLE `account` (
   `organizerID` int(11) NOT NULL,
   `emailOrg` varchar(30) NOT NULL,
-  `passwordOrg` varchar(30) NOT NULL
+  `passwordOrg` varchar(255) NOT NULL,
+  `isEmailconfirm` tinyint NOT NULL,
+  `token` varchar(30) NOT NULL
+
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -186,7 +189,7 @@ CREATE TABLE `registration_form` (
 CREATE TABLE `subevent` (
   `subevent_ID` int(6) NOT NULL,
   `event_ID` int(5) NOT NULL,
-  `name_sub Event` varchar(30) NOT NULL,
+  `nameSubEvent` varchar(30) NOT NULL,
   `description_subevent` varchar(150) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
